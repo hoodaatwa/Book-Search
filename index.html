@@ -409,8 +409,9 @@ font-weight:100;
             // Check if any data is '0', 'Not available', or 'Unknown', and exclude those lines
             const bookInfo = `
                 <h2>${title}</h2>
-                <p>Ratings Average: ${ratingsAverage}</p>
+                
                 <img src="${coverImageURL}" alt="Book Cover" style="max-width: 200px; max-height: 300px;">
+                <p>Ratings Average:</p> ${ratingsAverage}
                 <p>Edition Count: ${editionCount}</p>
                 <p>Author: ${authorName}</p>
                 <p>Subject: ${subject}</p>
