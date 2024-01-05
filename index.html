@@ -334,6 +334,8 @@ font-weight:100;
             data.items.forEach(item => {
                 const title = item.volumeInfo.title;
                 const coverImageURL = item.volumeInfo.imageLinks ? item.volumeInfo.imageLinks.thumbnail : '';
+                const rating = item.volumeInfo.averageRating ? item.volumeInfo.averageRating : 'Not rated';
+                const description = item.volumeInfo.description ? item.volumeInfo.description : 'No description available';
                 const pageCount = item.volumeInfo.pageCount || 'Not available';
                 const authors = item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : 'Unknown Author';
                 const categories = item.volumeInfo.categories ? item.volumeInfo.categories.join(', ') : 'Not available';
@@ -345,6 +347,8 @@ font-weight:100;
                 const bookInfo = `
                     <h2>${title}</h2>
                     <img src="${coverImageURL}" alt="Book Cover" style="max-width: 200px; max-height: 300px;">
+                    <b>Rating:</b> ${rating} <br>
+                    <b>Description:</b> ${description} <br>
                     <p>Page Count: ${pageCount}</p>
                     <p>Authors: ${authors}</p>
                     <p>Categories: ${categories}</p>
