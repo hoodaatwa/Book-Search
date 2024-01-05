@@ -93,6 +93,8 @@
             padding: 0;
             justify-content: flex-start;
             margin-top: 20px;
+max-width:100%;
+overflow-x:auto;
         }
 
         .pagination li {
@@ -251,6 +253,7 @@
             // Process and display information for each book
             data.items.forEach(item => {
                 const title = item.volumeInfo.title;
+                const ratingsAverage = item.volumeInfo.averageRating || 'Not available';
                 const coverImageURL = item.volumeInfo.imageLinks ? item.volumeInfo.imageLinks.thumbnail : '';
                 const pageCount = item.volumeInfo.pageCount || 'Not available';
                 const authors = item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : 'Unknown Author';
@@ -261,7 +264,8 @@
 
                 // Check if any data is '0', 'Not available', or 'Unknown', and exclude those lines
                 const bookInfo = `
-                    <h2>${title}</h2>                  
+                    <h2>${title}</h2>
+                    <p>Ratings Average: ${ratingsAverage}</p>
                     <img src="${coverImageURL}" alt="Book Cover" style="max-width: 200px; max-height: 300px;">
                     <p>Page Count: ${pageCount}</p>
                     <p>Authors: ${authors}</p>
