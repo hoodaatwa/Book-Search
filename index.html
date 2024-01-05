@@ -3,118 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Orbitron&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Hind&display=swap" rel="stylesheet">
+
     <title>Book Search</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f8f8;
-        }
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
 
-        #searchContainer {
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            text-align: center;
-        }
+#searchContainer {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
 
-        label {
-            display: block;
-            font-size: 16px;
-            margin-bottom: 8px;
-            color: #333;
-        }
+label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #333;
+}
 
-        input {
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-bottom: 16px;
-            box-sizing: border-box;
-        }
+input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
 
-        button {
-            background-color: #4caf50;
-            color: #fff;
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
-        button:hover {
-            background-color: #45a049;
-        }
+button:hover {
+    background-color: #45a049;
+}
 
-        #loadingSpinner {
-            display: none;
-            font-size: 20px;
-            margin-top: 10px;
-        }
+#loadingSpinner {
+    display: none;
+    font-size: 20px;
+    margin-top: 10px;
+}
 
-        .suggestions {
-            list-style: none;
-            padding: 0;
-            cursor: pointer;
-            max-height: 120px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin: 0;
-            padding: 0;
-        }
+.suggestions {
+    list-style: none;
+    padding: 0;
+    cursor: pointer;
+    max-height: 120px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0;
+    padding: 0;
+}
 
-        .suggestions li {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            background-color: #f9f9f9;
-            transition: background-color 0.3s;
-        }
+.suggestions li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s;
+}
 
-        .suggestions li:hover {
-            background-color: #e3e3e3;
-        }
+.suggestions li:hover {
+    background-color: #e3e3e3;
+}
 
-        .bookInfo {
-            margin: 20px 0;
-            text-align: left;
-        }
+.bookInfo {
+    margin: 20px 0;
+    text-align: left;
+}
 
-        .pagination {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            justify-content: flex-start;
-            margin-top: 20px;
-max-width:100%;
-overflow-x:auto;
-        }
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    justify-content: flex-start;
+    margin-top: 20px;
+    max-width: 100%;
+    overflow-x: auto;
+}
 
-        .pagination li {
-            margin-right: 5px;
-            cursor: pointer;
-            background-color: #4caf50;
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
+.pagination li {
+    margin-right: 5px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
 
-        .pagination li:hover {
-            background-color: #45a049;
-        }
+.pagination li:hover {
+    background-color: #45a049;
+}
 
-        .pagination li.active {
-            background-color: #45a049;
-            font-weight: bold;
-        }
+.pagination li.active {
+    background-color: #45a049;
+    font-weight: bold;
+}
+
+
+
+
     </style>
 </head>
 <body>
@@ -123,6 +130,7 @@ overflow-x:auto;
     <label for="bookQuery">Enter Book Title:</label>
     <input type="text" id="bookQuery" placeholder="E.g., The Lord of the Rings" oninput="showSuggestions()">
     <button onclick="searchBook()">Search</button>
+<br ></br>
     <span id="loadingSpinner">Loading...</span>
     <ul class="suggestions" id="suggestions"></ul>
     <div id="bookData" class="bookInfo"></div>
@@ -253,7 +261,6 @@ overflow-x:auto;
             // Process and display information for each book
             data.items.forEach(item => {
                 const title = item.volumeInfo.title;
-                const ratingsAverage = item.volumeInfo.averageRating || 'Not available';
                 const coverImageURL = item.volumeInfo.imageLinks ? item.volumeInfo.imageLinks.thumbnail : '';
                 const pageCount = item.volumeInfo.pageCount || 'Not available';
                 const authors = item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : 'Unknown Author';
@@ -265,7 +272,6 @@ overflow-x:auto;
                 // Check if any data is '0', 'Not available', or 'Unknown', and exclude those lines
                 const bookInfo = `
                     <h2>${title}</h2>
-                    <p>Ratings Average: ${ratingsAverage}</p>
                     <img src="${coverImageURL}" alt="Book Cover" style="max-width: 200px; max-height: 300px;">
                     <p>Page Count: ${pageCount}</p>
                     <p>Authors: ${authors}</p>
