@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Orbitron&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=itim&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Cairo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=itim&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cairo&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Hind&display=swap" rel="stylesheet">
+    <title>Book Search</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -177,7 +178,20 @@ font-weight:100;
 <body>
 
 <div id="searchContainer">
-    <label for="bookQuery">Enter Book Title:</label>
+     <label for="bookQuery" style="
+    font-size: 39px;
+    display: block;
+    text-shadow: -7px 3px 10px #4CAF50;
+    letter-spacing: 0.02em;
+    text-align: center;
+    color: #4CAF50;
+    text-shadow: 5px 5px 0px #8BC34A,
+        2px 2px 0px #4CAF50,
+        4px 4px 0px #FFEB3B,
+        ;
+    ">
+    Book Search
+     </label>
     <input type="text" id="bookQuery" placeholder="E.g., The Lord of the Rings" oninput="showSuggestions()">
     <button onclick="searchBook()">Search</button>
 <br ></br>
