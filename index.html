@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Search</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+
+        #searchContainer {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #loadingSpinner {
+            display: none;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        .suggestions {
+            list-style: none;
+            padding: 0;
+            cursor: pointer;
+            max-height: 120px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .suggestions li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s;
+        }
+
+        .suggestions li:hover {
+            background-color: #e3e3e3;
+        }
+
+        .bookInfo {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            justify-content: flex-start;
+            margin-top: 20px;
+        }
+
+        .pagination li {
+            margin-right: 5px;
+            cursor: pointer;
+            background-color: #4caf50;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .pagination li:hover {
+            background-color: #45a049;
+        }
+
+        .pagination li.active {
+            background-color: #45a049;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div id="searchContainer">
+    <label for="bookQuery">Enter Book Title:</label>
+    <input type="text" id="bookQuery" placeholder="E.g., The Lord of the Rings" oninput="showSuggestions()">
+    <button onclick="searchBook()">Search</button>
+    <span id="loadingSpinner">Loading...</span>
+    <ul class="suggestions" id="suggestions"></ul>
+    <div id="bookData" class="bookInfo"></div>
+    <ul class="pagination" id="pagination"></ul>
+</div>
+
+
+
+<script>
+    // Function to fetch suggestions from Google Books API
+    function fetchGoogleBooksSuggestions(query) {
+        const script = document.createElement('script');
+        script.src = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&callback=handleGoogleBooksResponse`;
+        document.body.appendChild(script);
+    }
+
+    // Callback function to handle Google Books API response
+    function handleGoogleBooksResponse(response) {
+        const suggestionsDiv = document.getElementById('suggestions');
+
+        // Clear existing suggestions
+        suggestionsDiv.innerHTML = '';
+
+        // Display suggestions
+        if (response.items && response.items.length > 0) {
+            response.items.forEach(item => {
+                const title = item.volumeInfo.title;
+
+                const li = document.createElement('li');
+                li.textContent = title;
+                li.addEventListener('click', () => {
+                    document.getElementById('bookQuery').value = title;
+                    suggestionsDiv.innerHTML = '';
+                });
+                suggestionsDiv.appendChild(li);
+
+                // If Google results are found, hide pagination
+                document.getElementById('pagination').style.display = 'none';
+            });
+        } else {
+            // If no Google results, show pagination
+            document.getElementById('pagination').style.display = 'flex';
+        }
+    }
+
+    // Function to fetch suggestions while typing
+    function showSuggestions() {
+        const query = document.getElementById('bookQuery').value;
+
+        // Clear existing suggestions
+        document.getElementById('suggestions').innerHTML = '';
+
+        // Fetch and display suggestions
+        if (query.trim() !== '') {
+            fetchGoogleBooksSuggestions(query);
+        }
+    }
+
+    // Function to fetch data from Open Library API
+    function fetchOpenLibraryData(query, page = 1) {
+        return fetch(`https://openlibrary.org/search.json?q=${query}&page=${page}&limit=10`)
+            .then(response => response.json())
+            .catch(error => {
+                console.error('Error fetching Open Library data:', error);
+                throw error;
+            });
+    }
+
+    // Function to fetch data from both Open Library and Google Books APIs
+    async function fetchData(query, page = 1) {
+        // Hide suggestions
+        document.getElementById('suggestions').innerHTML = '';
+
+        // Show loading spinner
+        document.getElementById('loadingSpinner').style.display = 'inline';
+
+        // Clear existing data
+        document.getElementById('bookData').innerHTML = '';
+        document.getElementById('pagination').innerHTML = ''; // Clear existing pagination
+
+        try {
+            // Fetch data from Open Library
+            const openLibraryData = await fetchOpenLibraryData(query, page);
+
+            // Check if there are any works in the Open Library response
+            if (openLibraryData.docs && openLibraryData.docs.length > 0) {
+                // Process the Open Library data and update the HTML content
+                displayBookData(openLibraryData);
+
+                // Add pagination if more than 10 results
+                if (openLibraryData.numFound > 10) {
+                    displayPagination(openLibraryData, page);
+                }
+            } else {
+                // If no results from Open Library, try fetching data from Google Books API
+                fetchGoogleBooksSuggestions(query);
+                fetchGoogleBooksData(query);
+            }
+        } catch (error) {
+            // Handle errors from Open Library API
+            document.getElementById('bookData').innerHTML = '<p>Error fetching data. Please try again later.</p>';
+        } finally {
+            // Hide loading spinner after data is loaded
+            document.getElementById('loadingSpinner').style.display = 'none';
+        }
+    }
+
+    // Function to fetch data from Google Books API
+    function fetchGoogleBooksData(query) {
+        fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                // Process the Google Books data and update the HTML content
+                displayGoogleBooksData(data);
+            })
+            .catch(error => {
+                console.error('Error fetching Google Books data:', error);
+                document.getElementById('bookData').innerHTML = '<p>Error fetching data from Google Books. Please try again later.</p>';
+            });
+    }
+
+    // Function to display Google Books data in HTML
+    function displayGoogleBooksData(data) {
+        const bookDataDiv = document.getElementById('bookData');
+
+        // Check if there are any items in the response
+        if (data.items && data.items.length > 0) {
+            // Process and display information for each book
+            data.items.forEach(item => {
+                const title = item.volumeInfo.title;
+                const coverImageURL = item.volumeInfo.imageLinks ? item.volumeInfo.imageLinks.thumbnail : '';
+                const pageCount = item.volumeInfo.pageCount || 'Not available';
+                const authors = item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : 'Unknown Author';
+                const categories = item.volumeInfo.categories ? item.volumeInfo.categories.join(', ') : 'Not available';
+                const publishedDate = item.volumeInfo.publishedDate || 'Not available';
+                const language = item.volumeInfo.language || 'Not available';
+                const previewLink = item.volumeInfo.previewLink || '#';
+
+                // Check if any data is '0', 'Not available', or 'Unknown', and exclude those lines
+                const bookInfo = `
+                    <h2>${title}</h2>                  
+                    <img src="${coverImageURL}" alt="Book Cover" style="max-width: 200px; max-height: 300px;">
+                    <p>Page Count: ${pageCount}</p>
+                    <p>Authors: ${authors}</p>
+                    <p>Categories: ${categories}</p>
+                    <p>Published Date: ${publishedDate}</p>
+                    <p>Language: ${language}</p>
+                    <a href="${previewLink}" target="_blank">Preview Link</a>
+                `;
+
+                // Append the book info to the HTML content
+                bookDataDiv.innerHTML += bookInfo;
+            });
+        } else {
+            // Display a message if no results are found from Google Books
+            bookDataDiv.innerHTML = '<p>No results found from Google Books.</p>';
+        }
+    }
+
+    // Function to display book data in HTML
+    async function displayBookData(data) {
+        const bookDataDiv = document.getElementById('bookData');
+
+        // Keep track of displayed titles to avoid duplicates
+        const displayedTitles = new Set();
+
+        // Display information for each book in the results
+        for (const book of data.docs) {
+            const title = book.title;
+
+            // Skip displaying if the title is already in the set
+            if (displayedTitles.has(title)) {
+                continue;
+            }
+
+            displayedTitles.add(title);
+
+            const ratingsAverage = book.ratings_average || 'Not available';
+            const coverEditionKey = book.cover_edition_key || 'Not available';
+            const coverImageURL = `https://covers.openlibrary.org/b/olid/${coverEditionKey}-M.jpg`; // Construct cover image URL
+            const editionCount = book.edition_count || 'Not available';
+            const authorName = book.author_name ? book.author_name.join(', ') : 'Unknown Author';
+            const subject = book.subject ? book.subject.join(', ') : 'Not available';
+            const person = book.person ? book.person.join(', ') : 'Not available';
+            const place = book.place ? book.place.join(', ') : 'Not available';
+            const time = book.time ? book.time.join(', ') : 'Not available';
+            const hasFullText = book.has_fulltext || false;
+            const titleSuggest = book.title_suggest || 'Not available';
+            const publishYear = book.publish_year ? book.publish_year[0] : 'Unknown';
+            const language = book.language ? book.language[0] : 'Unknown';
+            const numberOfPagesMedian = book.number_of_pages_median || 'Not available';
+            const firstPublishYear = book.first_publish_year || 'Unknown';
+
+            // Fetch data from Google Books API for the Preview Link
+            const googleBooksData = await fetchGoogleBooksDataByTitle(title);
+
+            // Extract Preview Link from Google Books API response
+            const previewLink = googleBooksData?.items?.[0]?.volumeInfo?.previewLink || '#';
+
+            // Check if any data is '0', 'Not available', or 'Unknown', and exclude those lines
+            const bookInfo = `
+                <h2>${title}</h2>
+                <p>Ratings Average: ${ratingsAverage}</p>
+                <img src="${coverImageURL}" alt="Book Cover" style="max-width: 200px; max-height: 300px;">
+                <p>Edition Count: ${editionCount}</p>
+                <p>Author: ${authorName}</p>
+                <p>Subject: ${subject}</p>
+                <p>Person: ${person}</p>
+                <p>Place: ${place}</p>
+                <p>Time: ${time}</p>
+                <p>Has Full Text: ${hasFullText}</p>
+                <p>Title Suggest: ${titleSuggest}</p>
+                <p>Publish Year: ${publishYear}</p>
+                <p>Language: ${language}</p>
+                <p>Number of Pages Median: ${numberOfPagesMedian}</p>
+                <p>First Publish Year: ${firstPublishYear}</p>
+                <p>Preview Link: <a href="${previewLink}" target="_blank">Google Books</a></p>
+            `;
+
+            // Append the book info to the HTML content
+            bookDataDiv.innerHTML += bookInfo;
+        }
+    }
+
+    // Function to fetch data from Google Books API by book title
+    function fetchGoogleBooksDataByTitle(title) {
+        return fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(title)}&maxResults=1`)
+            .then(response => response.json())
+            .catch(error => {
+                console.error('Error fetching Google Books data by title:', error);
+                return null;
+            });
+    }
+
+    // Function to display pagination
+    function displayPagination(data, currentPage) {
+        const paginationDiv = document.getElementById('pagination');
+
+        // Show pagination only if there are more than 10 results
+        if (data.numFound > 10) {
+            paginationDiv.style.display = 'flex';
+
+            const totalPages = Math.ceil(data.numFound / 10); // Assuming 10 results per page
+
+            // Clear existing pagination
+            paginationDiv.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const li = document.createElement('li');
+                li.textContent = i;
+                li.addEventListener('click', () => fetchData(document.getElementById('bookQuery').value, i));
+
+                if (i === currentPage) {
+                    li.style.fontWeight = 'bold';
+                }
+
+                paginationDiv.appendChild(li);
+            }
+        } else {
+            // If there are 10 or fewer results, hide pagination
+            paginationDiv.style.display = 'none';
+        }
+    }
+
+    // Function to trigger the search based on user input
+    function searchBook() {
+        const bookQuery = document.getElementById('bookQuery').value;
+        // Hide suggestions when clicking the search button
+        document.getElementById('suggestions').innerHTML = '';
+        fetchData(bookQuery);
+    }
+</script>
+
+</body>
+</html>
