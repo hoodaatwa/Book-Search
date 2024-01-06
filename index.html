@@ -604,34 +604,39 @@ font-family: 'Orbitron', sans-serif;
     }
 
     // Function to display pagination
-    function displayPagination(data, currentPage) {
-        const paginationDiv = document.getElementById('pagination');
+function displayPagination(data, currentPage) {
+    const paginationDiv = document.getElementById('pagination');
 
-        // Show pagination only if there are more than 10 results
-        if (data.numFound > 10) {
-            paginationDiv.style.display = 'flex';
+    // Show pagination only if there are more than 10 results
+    if (data.numFound > 10) {
+        paginationDiv.style.display = 'flex';
 
-            const totalPages = Math.ceil(data.numFound / 10); // Assuming 10 results per page
+        const totalPages = Math.ceil(data.numFound / 10); // Assuming 10 results per page
 
-            // Clear existing pagination
-            paginationDiv.innerHTML = '';
+        // Clear existing pagination
+        paginationDiv.innerHTML = '';
 
-            for (let i = 1; i <= totalPages; i++) {
-                const li = document.createElement('li');
-                li.textContent = i;
-                li.addEventListener('click', () => fetchData(document.getElementById('bookQuery').value, i));
+        for (let i = 1; i <= totalPages; i++) {
+            const li = document.createElement('li');
+            li.textContent = i;
+            li.addEventListener('click', () => {
+                fetchData(document.getElementById('bookQuery').value, i);
+                // Show suggestions when pagination is clicked
+                showSuggestions();
+            });
 
-                if (i === currentPage) {
-                    li.style.fontWeight = 'bold';
-                }
-
-                paginationDiv.appendChild(li);
+            if (i === currentPage) {
+                li.style.fontWeight = 'bold';
             }
-        } else {
-            // If there are 10 or fewer results, hide pagination
-            paginationDiv.style.display = 'none';
+
+            paginationDiv.appendChild(li);
         }
+    } else {
+        // If there are 10 or fewer results, hide pagination
+        paginationDiv.style.display = 'none';
     }
+}
+
 
     // Function to trigger the search based on user input
 function searchBook() {
