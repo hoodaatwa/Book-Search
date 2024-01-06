@@ -634,12 +634,16 @@ font-family: 'Orbitron', sans-serif;
     }
 
     // Function to trigger the search based on user input
-    function searchBook() {
-        const bookQuery = document.getElementById('bookQuery').value;
-        // Hide suggestions when clicking the search button
-        document.getElementById('suggestions').innerHTML = '';
-        fetchData(bookQuery);
-    }
+function searchBook() {
+    const bookQuery = document.getElementById('bookQuery').value;
+
+    // Show suggestions
+    showSuggestions();
+
+    // Fetch data
+    fetchData(bookQuery);
+}
+
 </script>
     <script>
     const currentPageLocation = window.location.href;
