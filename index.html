@@ -172,11 +172,118 @@ font-weight:100;
     
 
     </style>
+ <style>
+    #repoList {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      padding: 0px;
+      max-width: 800px;
+      margin: auto;
+    }
 
+    .repoCard {
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: 10px;
+      padding: 20px;
+      width: 300px;
+      border-radius: 8px;
+      transition: box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    .repoCard:hover {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .repoTitle {
+      font-size: 1.5rem;
+      color: #1976D2;
+      margin-bottom: 10px;
+    }
+
+    .repoDescription {
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .repoLink {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-top: 15px;
+    }
+
+    .repoLink a {
+      color: white;
+      text-decoration: none;
+      background-color: #1976D2;
+      padding: 10px 15px;
+      border-radius: 5px;
+      display: inline-block;
+      transition: background-color 0.3s;
+    }
+
+    .repoLink a:hover {
+      background-color: #1565C0;
+    }
+
+    .repoLink i {
+      margin-left: 5px;
+    }
+
+    .center {
+      color: white;
+      text-decoration: none;
+      background-color: #1976D2;
+      padding: 10px 15px;
+      border-radius: 5px;
+      display: inline-block;
+      transition: background-color 0.3s;
+      margin: 10px;
+    }
+ </style>
 
 </head>
 <body>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 <div id="searchContainer">
      <label for="bookQuery" style="
     font-size: 39px;
@@ -205,7 +312,7 @@ font-weight:100;
         ;">Loading...</span>
     <br ></br>
     <ul class="suggestions" id="suggestions"></ul>
-    <div id="bookData" class="bookInfo"></div>
+    <div id="bookData" class="bookInfo">  <div id="repoList"></div></div>
     <ul class="pagination" id="pagination"></ul>
 </div>
 
@@ -482,6 +589,48 @@ font-weight:100;
         fetchData(bookQuery);
     }
 </script>
+  <script>
+    const currentPageLocation = window.location.href;
+    let displayedRepos = 0; // Counter for displayed repositories
 
+    // Fetch data from GitHub API
+    fetch('https://api.github.com/users/hoodaatwa/repos')
+      .then(response => response.json())
+      .then(data => {
+        // Create Material-UI card for each repository
+        const repoList = document.getElementById('repoList');
+        data.forEach(repo => {
+          if (displayedRepos >= 4 || repo.homepage === currentPageLocation) {
+            // Skip creating card if reached the limit or homepage matches current page location
+            return;
+          }
+
+          const repoCard = document.createElement('div');
+          repoCard.classList.add('repoCard');
+          repoCard.innerHTML = `
+          <div class="repoTitle">${repo.name}</div>
+          <div class="repoDescription">${repo.description}</div>
+          <div class="repoLink">
+            <a href="${repo.homepage}" target="_blank">Homepage <i class="fas fa-external-link-alt"></i></a>
+          </div>
+        `;
+          repoList.appendChild(repoCard);
+
+          displayedRepos++;
+        });
+
+        // Find the "Main" repository and create a special card with a dynamic link
+        const mainRepo = data.find(repo => repo.name.toLowerCase() === 'main');
+        if (mainRepo) {
+          const mainRepoCard = document.createElement('div');
+
+          mainRepoCard.innerHTML = `
+          <a class="center" href="${mainRepo.homepage}" target="_blank">Go to Main Page <i class="fas fa-external-link-alt"></i></a>
+        `;
+          repoList.appendChild(mainRepoCard);
+        }
+      })
+      .catch(error => console.error('Error fetching data:', error));
+                                   </script>
 </body>
     </html>
