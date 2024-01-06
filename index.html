@@ -290,13 +290,6 @@ font-family: 'Orbitron', sans-serif;
     
 </head>
 <body>
-
-
-
-
-
-
-
   <div id="navbar">
     <div id="menuToggle" onclick="toggleMenu()">
       <i id="menuIcon" class="fas fa-bars"></i>
@@ -306,36 +299,6 @@ font-family: 'Orbitron', sans-serif;
   <div id="menuOverlay" onclick="toggleMenu()">
     <div id="repoList"></div>
   </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 <div id="searchContainer">
      <label for="bookQuery" style="
     font-size: 39px;
@@ -353,6 +316,9 @@ font-family: 'Orbitron', sans-serif;
      </label>
     <input type="text" id="bookQuery" placeholder="E.g., The Lord of the Rings" oninput="showSuggestions()">
     <button onclick="searchBook()">Search</button>
+    
+    <br ></br>
+    <ul class="suggestions" id="suggestions"></ul>
     <span id="loadingSpinner" style="font-family: 'Orbitron', sans-serif;font-size: 39px;
     text-shadow: -7px 3px 10px #4CAF50;
     letter-spacing: 0.02em;
@@ -362,8 +328,6 @@ font-family: 'Orbitron', sans-serif;
         2px 2px 0px #4CAF50,
         4px 4px 0px #FFEB3B,
         ;">Loading...</span>
-    <br ></br>
-    <ul class="suggestions" id="suggestions"></ul>
     <div id="bookData" class="bookInfo"></div>
     <ul class="pagination" id="pagination"></ul>
 </div>
