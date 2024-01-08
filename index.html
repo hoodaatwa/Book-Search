@@ -296,54 +296,7 @@ font-family: 'Orbitron', sans-serif;
             margin: 10px 0;
         }
 
-#goodreads-widget {
-    font-family: georgia, serif;
-    padding: 0;
-    width: auto;
-    border: 1px solid #ddd;
-}
 
-        #goodreads-widget h1 {
-            font-weight: normal;
-            font-size: 16px;
-            border-bottom: 1px solid #BBB596;
-            margin-bottom: 0;
-        }
-
-        #goodreads-widget a {
-            text-decoration: none;
-            color: #660;
-        }
-
-       
-
-        #goodreads-widget a:hover {
-            text-decoration: underline;
-        }
-
-        #goodreads-widget a:active {
-            color: #660;
-        }
-
-        #gr_footer {
-            width: 100%;
-            border-top: 1px solid #BBB596;
-            text-align: right;
-        }
-
-        #goodreads-widget .gr_branding {
-            color: #382110;
-            font-size: 11px;
-            text-decoration: none;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        }
-#goodreads-container {
-        max-width: 600px; /* Set the maximum width as per your requirement */
-        margin: 0 auto; /* Center the elements horizontally */
-    }
- #the_iframe {
-        width: 100%; /* Make the iframe width 100% of its container */
-    }
     </style>
 
 </head>
@@ -624,23 +577,11 @@ font-family: 'Orbitron', sans-serif;
             bookDataDiv.innerHTML += bookInfo;
             
 
-            // Display Goodreads widget below each book
+            // Display Goodreads widget for each book
             bookDataDiv.innerHTML += `
-                <div id="goodreads-widget">
-                    <div id="gr_header">
-                        <h1><a rel="nofollow">Goodreads reviews for ${title}</a></h1>
-                    </div>
-                    
-<div id="goodreads-container">
-    <iframe sandbox id="the_iframe" src="https://www.goodreads.com/api/reviews_widget_iframe?did=DEVELOPER_ID&format=html&header_text=Goodreads+reviews+for+${title}&isbn=${book.id_goodreads}&links=660&min_rating=1&num_reviews=10&review_back=ffffff&stars=000000&stylesheet=&text=444" height="400" frameborder="0"></iframe>
-</div>
-
-
-                    <div id="gr_footer">
-                        <a class="gr_branding" target="_blank" rel="nofollow noopener noreferrer" href="https://www.goodreads.com/search?q=${encodeURIComponent(title)}">Reviews from Goodreads.com</a>
-                    </div>
-                </div>
-<br>
+              <br>
+<a  target="_blank" rel="nofollow noopener noreferrer" href="https://www.goodreads.com/search?q=${title}">Reviews from Goodreads.com</a>
+                
             `;
        
             bookDataDiv.innerHTML += `<hr style="height: 5px; background-color: #f8f8f8; margin: 0;border: none;">`;
