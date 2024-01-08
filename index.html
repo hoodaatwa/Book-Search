@@ -499,7 +499,7 @@ font-family: 'Orbitron', sans-serif;
             bookDataDiv.innerHTML += `
               <br>
 <a  target="_blank" rel="nofollow noopener noreferrer" href="https://www.goodreads.com/search?q=${title}">Reviews from Goodreads.com</a>
-                
+                <br>
             `;
 
 
@@ -535,9 +535,6 @@ font-family: 'Orbitron', sans-serif;
             const coverImageURL = `https://covers.openlibrary.org/b/olid/${coverEditionKey}-M.jpg`; // Construct cover image URL
             const editionCount = book.edition_count || 'Not available';
             const authorName = book.author_name ? book.author_name.join(', ') : 'Unknown Author';
-            const subject = book.subject ? book.subject.join(', ') : 'Not available';
-            const person = book.person ? book.person.join(', ') : 'Not available';
-            const place = book.place ? book.place.join(', ') : 'Not available';
             const time = book.time ? book.time.join(', ') : 'Not available';
             const hasFullText = book.has_fulltext || false;
             const titleSuggest = book.title_suggest || 'Not available';
@@ -560,9 +557,6 @@ font-family: 'Orbitron', sans-serif;
                 <p>Ratings Average:</p> ${ratingsAverage}
                 <p>Edition Count: ${editionCount}</p>
                 <p>Author: ${authorName}</p>
-                <p>Subject: ${subject}</p>
-                <p>Person: ${person}</p>
-                <p>Place: ${place}</p>
                 <p>Time: ${time}</p>
                 <p>Has Full Text: ${hasFullText}</p>
                 <p>Title Suggest: ${titleSuggest}</p>
@@ -580,7 +574,7 @@ font-family: 'Orbitron', sans-serif;
             // Display Goodreads widget for each book
             bookDataDiv.innerHTML += `
 <a  target="_blank" rel="nofollow noopener noreferrer" href="https://www.goodreads.com/search?q=${title}">Reviews from Goodreads.com</a>
-                
+                <br>
             `;
        
             bookDataDiv.innerHTML += `<hr style="height: 5px; background-color: #f8f8f8; margin: 0;border: none;">`;
