@@ -287,7 +287,63 @@ font-family: 'Orbitron', sans-serif;
             margin: 10px;
         }
     </style>
-    
+     <style>
+        /* ... (Your existing styles remain unchanged) ... */
+
+        hr {
+            height: 5px;
+            background-color: #f8f8f8;
+            margin: 10px 0;
+        }
+
+        #goodreads-widget {
+            font-family: georgia, serif;
+            padding: 18px 0;
+            width: 575px;
+        }
+
+        #goodreads-widget h1 {
+            font-weight: normal;
+            font-size: 16px;
+            border-bottom: 1px solid #BBB596;
+            margin-bottom: 0;
+        }
+
+        #goodreads-widget a {
+            text-decoration: none;
+            color: #660;
+        }
+
+        iframe {
+            background-color: #ffffff;
+            border: none;
+            width: 575px;
+            height: 400px;
+            margin: 10px 0;
+        }
+
+        #goodreads-widget a:hover {
+            text-decoration: underline;
+        }
+
+        #goodreads-widget a:active {
+            color: #660;
+        }
+
+        #gr_footer {
+            width: 100%;
+            border-top: 1px solid #BBB596;
+            text-align: right;
+        }
+
+        #goodreads-widget .gr_branding {
+            color: #382110;
+            font-size: 11px;
+            text-decoration: none;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+    </style>
+
 </head>
 <body>
   <div id="navbar">
@@ -482,6 +538,17 @@ font-family: 'Orbitron', sans-serif;
 
                 // Append the book info to the HTML content
                 bookDataDiv.innerHTML += bookInfo;
+
+
+// Display Goodreads widget for each book
+            bookDataDiv.innerHTML += `
+              <br>
+<a  target="_blank" rel="nofollow noopener noreferrer" href="https://www.goodreads.com/search?q=${title}">Reviews from Goodreads.com</a>
+                
+            `;
+
+
+
                 bookDataDiv.innerHTML += `<hr style="height: 5px; background-color: #f8f8f8; margin: 0;border: none;">`;
             });
         } else {
@@ -490,7 +557,7 @@ font-family: 'Orbitron', sans-serif;
         }
     }
 
-    // Function to display book data in HTML
+// Function to display book data in HTML with Goodreads integration
     async function displayBookData(data) {
         const bookDataDiv = document.getElementById('bookData');
 
@@ -553,6 +620,21 @@ font-family: 'Orbitron', sans-serif;
 
             // Append the book info to the HTML content
             bookDataDiv.innerHTML += bookInfo;
+            
+
+            // Display Goodreads widget below each book
+            bookDataDiv.innerHTML += `
+                <div id="goodreads-widget">
+                    <div id="gr_header">
+                        <h1><a rel="nofollow">Goodreads reviews for ${title}</a></h1>
+                    </div>
+                    <iframe sandbox id="the_iframe" src="https://www.goodreads.com/api/reviews_widget_iframe?did=DEVELOPER_ID&format=html&header_text=Goodreads+reviews+for+${title}&isbn=${book.id_goodreads}&links=660&min_rating=1&num_reviews=10&review_back=ffffff&stars=000000&stylesheet=&text=444" width="auto" height="400" frameborder="0"></iframe>
+                    <div id="gr_footer">
+                        <a class="gr_branding" target="_blank" rel="nofollow noopener noreferrer" href="https://www.goodreads.com/search?q=${encodeURIComponent(title)}">Reviews from Goodreads.com</a>
+                    </div>
+                </div>
+            `;
+       
             bookDataDiv.innerHTML += `<hr style="height: 5px; background-color: #f8f8f8; margin: 0;border: none;">`;
         }
     }
@@ -673,6 +755,8 @@ function searchBook() {
       }
     }
   </script>
+
+
 
 </body>
     </html>
