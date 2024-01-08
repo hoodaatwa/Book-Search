@@ -498,7 +498,7 @@ font-family: 'Orbitron', sans-serif;
 // Display Goodreads widget for each book
             bookDataDiv.innerHTML += `
               <br>
-<a  target="_blank" rel="nofollow noopener noreferrer" href="https://www.goodreads.com/search?q=${title}">Reviews from Goodreads.com</a>
+<a rel="nofollow" href="https://www.goodreads.com/search?q=${encodeURIComponent(title)}" target="_blank">Goodreads reviews for ${title}</a>                
                 <br>
             `;
 
@@ -573,8 +573,7 @@ font-family: 'Orbitron', sans-serif;
 
             // Display Goodreads widget for each book
             bookDataDiv.innerHTML += `
-<a  target="_blank" rel="nofollow noopener noreferrer" href="https://www.goodreads.com/search?q=${title}">Reviews from Goodreads.com</a>
-                <br>
+<a rel="nofollow" href="https://www.goodreads.com/search?q=${encodeURIComponent(title)}" target="_blank">Goodreads reviews for ${title}</a>                <br>
             `;
        
             bookDataDiv.innerHTML += `<hr style="height: 5px; background-color: #f8f8f8; margin: 0;border: none;">`;
