@@ -150,7 +150,7 @@
 // Display Goodreads widget for each book
             bookDataDiv.innerHTML += `
               <br>
-<a rel="nofollow" href="https://www.goodreads.com/search?q=${encodeURIComponent(title)}" target="_blank">Goodreads reviews for ${title}</a>                
+Goodreads search for<a rel="nofollow" href="https://www.goodreads.com/search?q=${encodeURIComponent(title)}" target="_blank"> ${title}</a>                
                 <br>
             `;
 
@@ -225,7 +225,7 @@
 
             // Display Goodreads widget for each book
             bookDataDiv.innerHTML += `
-<a rel="nofollow" href="https://www.goodreads.com/search?q=${encodeURIComponent(title)}" target="_blank">Goodreads reviews for ${title}</a>                <br>
+Goodreads search for<a rel="nofollow" href="https://www.goodreads.com/search?q=${encodeURIComponent(title)}" target="_blank"> ${title}</a>                <br>
             `;
        
             bookDataDiv.innerHTML += `<hr style="height: 5px; background-color: #f8f8f8; margin: 0;border: none;">`;
