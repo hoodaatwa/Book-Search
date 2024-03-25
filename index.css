@@ -20,7 +20,7 @@
             font-size: 16px;
             margin-bottom: 8px;
             color: #333;
-font-family: 'Orbitron', sans-serif;
+  font-family: 'Orbitron', sans-serif;
   font-weight: 1000;
   color: #a9b8c9;
         }
@@ -34,7 +34,7 @@ font-family: 'Orbitron', sans-serif;
             margin-bottom: 16px;
             box-sizing: border-box;
             display: inline-block;
-background-color: #eee;
+  background-color: #eee;
   border: none;
   font-family: 'Orbitron', sans-serif, 'Cairo';
   font-weight: 600;
@@ -52,7 +52,7 @@ background-color: #eee;
             border-radius: 4px;
             cursor: pointer;
             display: inline-block;
-font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
 
         button:hover {
