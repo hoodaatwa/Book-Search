@@ -279,3 +279,21 @@ font-family: 'Orbitron', sans-serif;
             background-color: #f8f8f8;
             margin: 10px 0;
         }
+
+#intro-outline {
+    border: 2px solid #007bff; /* Adjust color as needed */
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px; /* Creates space between this outline and the next content block */
+}
+
+#intro-outline h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#intro-outline p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
